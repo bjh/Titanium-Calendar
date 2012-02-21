@@ -5,7 +5,6 @@
  * and licensed under the Apache Public License (version 2)
  */
 #import "ComTiCalendarModule.h"
-#import "ComTiCalendarView.h"
 #import "ComTiCalendarItemProxy.h"
 #import "TiBase.h"
 #import "TiHost.h"
@@ -69,28 +68,62 @@
 
 #pragma Public APIs
 
--(NSDictionary *)findEvents:(id)args
-{
-	// grab the dictionary out and the start/end dates. 
-	NSDictionary *argDict = [args objectAtIndex:0];
-	NSDate *startDate = [argDict objectForKey:@"start"];
-	NSDate *endDate = [argDict objectForKey:@"end"];	
-	EKEventStore *store = [[[EKEventStore alloc] init] autorelease];
-	NSDictionary *theDict = [[NSMutableDictionary alloc] init];
-	NSInteger num=0;
-	
-	if ([startDate compare: endDate] == NSOrderedAscending) {
-		NSPredicate *predicate = [store predicateForEventsWithStartDate: startDate endDate: endDate calendars: nil]; 
-		NSArray *eventList = [store eventsMatchingPredicate:predicate];
-		for (EKEvent *event in eventList) {           
-			ComTiCalendarItemProxy *tmpTiObj = [[[ComTiCalendarItemProxy alloc] initWithEvent: event] autorelease];
-			// more than 9999 calendar objects and this will break alpha-sort :(
-			[theDict setValue: tmpTiObj forKey: [[[NSString alloc] initWithFormat: @"item_%04d", num] autorelease]];
-			num++;
-		}
-	}
-	return theDict;
+-(ComTiCalendarItemProxy*)findEvent:(id)args {
+  ENSURE_SINGLE_ARG(args,NSString);
+  EKEventStore *store = [[[EKEventStore alloc] init] autorelease];
+  EKEvent *event = [store eventWithIdentifier:args];
+  
+  if (event) {
+    ComTiCalendarItemProxy *event_proxy = [[[ComTiCalendarItemProxy alloc] initWithEvent: event] autorelease];
+    return event_proxy;
+  }
+
+  return nil;
 }
+
+//-(void)removeAllEvents:(id)args {
+//  NSLog(@"<CALENDAR MODULE> removeAllEvents");
+//  NSDate *start = [NSDate distantPast];
+//  NSDate *finish = [NSDate distantFuture];
+//  
+//  NSLog(@"<CALENDAR MODULE> start: %@", start);
+//  NSLog(@"<CALENDAR MODULE> finish: %@", finish);
+//  
+//  // use Dictionary for remove duplicates produced by events covered more one year segment
+//  NSMutableDictionary *eventsDict = [NSMutableDictionary dictionaryWithCapacity:1024];
+//  NSDate* currentStart = [NSDate dateWithTimeInterval:0 sinceDate:start];
+//  EKEventStore *eventStore = [[[EKEventStore alloc] init] autorelease];
+//  int seconds_in_year = 60*60*24*365;
+//  
+//  while ([currentStart compare:finish] == NSOrderedAscending) {
+//    NSDate* currentFinish = [NSDate dateWithTimeInterval:seconds_in_year sinceDate:currentStart];
+//    
+//    if ([currentFinish compare:finish] == NSOrderedDescending) {
+//      currentFinish = [NSDate dateWithTimeInterval:0 sinceDate:finish];
+//    }    
+//    
+//    NSPredicate *predicate = [eventStore predicateForEventsWithStartDate:currentStart endDate:currentFinish calendars:nil];
+//    [eventStore enumerateEventsMatchingPredicate:predicate
+//                                      usingBlock:^(EKEvent *event, BOOL *stop) {                                        
+//                                        if (event) {
+//                                          [eventsDict setObject:event forKey:event.eventIdentifier];
+//                                        }                                        
+//                                      }];       
+//    currentStart = [NSDate dateWithTimeInterval:(seconds_in_year + 1) sinceDate:currentStart];
+//  }
+//  
+////  NSArray *events = [eventsDict allValues];
+//	// not setting this causes all SORTS of explosions when you try to call localizedDescription later
+////	NSError *err = nil;
+////	if (event != nil) {
+////		[eventStore removeEvent:event span:EKSpanThisEvent error:&err];
+////	}
+//  
+//  for (id event in [eventsDict allValues]) {
+////    NSLog(@"is event? %@", [event isKindOfClass:[EKEvent class]]);
+//    NSLog(@"<CALENDAR MODULE> event: %@", event);
+//  }
+//}
 
 
 @end

@@ -5,9 +5,12 @@
  * and licensed under the Apache Public License (version 2)
  */
 #import "TiModule.h"
+#import "ComTiCalendarItemProxy.h"
 
-@interface ComTiCalendarModule : TiModule 
-{
+@interface ComTiCalendarModule : TiModule {
 }
+
+-(ComTiCalendarItemProxy*)findEvent:(id)args;
+//-(void)removeAllEvents:(id)args;
 
 @end

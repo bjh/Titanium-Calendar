@@ -1,4 +1,29 @@
-tmp
-bin
-build
-*.zip
+.DS_Store
+Thumbs.db
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/**/*
+.project
+# public/system/attachments/*
+.buildmode
+\#*#
+*~
+*\#
+.\#*
+*.stamp
+*(Autosaved).sqs
+config/database.yml
+# ECLIPSE - built application files
+*.apk
+*.ap_
+# ECLIPSE - files for the dex VM
+*.dex
+# ECLIPSE - Java class files
+*.class
+# ECLIPSE - generated GUI files
+*R.java
+workspace/.metadata/*
+
+com.ti.calendar-iphone-0.1.zip
+build/
