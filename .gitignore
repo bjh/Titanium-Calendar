@@ -27,3 +27,4 @@ workspace/.metadata/*
 
 com.ti.calendar-iphone-0.1.zip
 build/
+*.zip
