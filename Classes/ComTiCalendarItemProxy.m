@@ -25,6 +25,7 @@
 		[self replaceValue:event.eventIdentifier forKey:@"eventIdentifier" notification:NO];
 	}
 //  NSLog(@"<CALENDAR MODULE> init self: %@", self);
+//  fflush(stderr);
 	return self;
 }
 
@@ -46,6 +47,7 @@
 -(id)title
 {	
 //  NSLog(@"title: %@", [self valueForUndefinedKey:@"title"]);
+//  fflush(stderr);
 	return [self valueForUndefinedKey:@"title"];
 }
 
@@ -56,11 +58,13 @@
 	// normally is set during the createFooBar({title:"blah"}); 
 	[self replaceValue:value forKey:@"title" notification:NO];
 //  NSLog(@"setTitle: %@ : %@", value, [self valueForUndefinedKey:@"title"]);
+//  fflush(stderr);
 }
 
 -(id)location
 {	
 //  NSLog(@"location: %@", [self valueForUndefinedKey:@"location"]);
+//  fflush(stderr);
 	return [self valueForUndefinedKey:@"location"];
 }
 
@@ -69,12 +73,14 @@
 	ENSURE_TYPE_OR_NIL(value,NSString);
 	[self replaceValue:value forKey:@"location" notification:NO];
 //  NSLog(@"setLocation: %@", value);
+//  fflush(stderr);
 }
 
 
 -(id)notes
 {	
 //  NSLog(@"location: %@", [self valueForUndefinedKey:@"notes"]);
+//  fflush(stderr);
 	return [self valueForUndefinedKey:@"notes"];
 }
 
@@ -83,6 +89,7 @@
 	ENSURE_TYPE_OR_NIL(value,NSString);
 	[self replaceValue:value forKey:@"notes" notification:NO];
 //  NSLog(@"setNotes: %@", value);
+//  fflush(stderr);
 }
 
 -(id)startDate
@@ -102,6 +109,7 @@
 {
 	ENSURE_TYPE_OR_NIL(value,NSDate);
 //  NSLog(@"<CALENDAR MODULE> setStartDate: %@", value);
+//  fflush(stderr);
 	// make sure to store the value into dynprops as well, this
 	// normally is set during the createFooBar({title:"blah"}); 
 	[self replaceValue:value forKey:@"startDate" notification:NO];
@@ -124,6 +132,7 @@
 {
 	ENSURE_TYPE_OR_NIL(value,NSDate);
 //  NSLog(@"<CALENDAR MODULE> setEndDate: %@", value);
+//  fflush(stderr);
 	[self replaceValue:value forKey:@"endDate" notification:NO];
 }
 
@@ -142,6 +151,7 @@
 	_event.endDate = [[[NSDate alloc] initWithTimeInterval:1200 sinceDate:_event.startDate] autorelease];
   
 //  NSLog(@"<CALENDAR MODULE> event: %@", _event);
+//  fflush(stderr);
 	
   [_event setCalendar:[eventStore defaultCalendarForNewEvents]];
   NSError *err = nil;
@@ -154,6 +164,7 @@
   }
   
 //  NSLog(@"<CALENDAR MODULE> ERROR: %@", [err localizedDescription]);
+//  fflush(stderr);
   return nil;
 }
 

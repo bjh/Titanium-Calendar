@@ -36,7 +36,7 @@
 	// you *must* call the superclass
 	[super startup];
 	
-	NSLog(@"[INFO] %@ loaded",self);
+//	NSLog(@"[CALENDAR MODULE] %@ loaded",self);
 }
 
 -(void)shutdown:(id)sender
@@ -79,6 +79,37 @@
   }
 
   return nil;
+}
+
+- (BOOL)checkIsDeviceVersionHigherThanRequiredVersion:(NSString *)requiredVersion
+{
+  NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+  
+  if ([currSysVer compare:requiredVersion options:NSNumericSearch] != NSOrderedAscending) {
+    return YES;
+  }
+  
+  return NO;
+}
+
+-(BOOL)requestPermission:(id)args {
+  EKEventStore* eventStore = [[EKEventStore alloc] init];
+  
+  __block BOOL rval = FALSE;
+  
+  if ([self checkIsDeviceVersionHigherThanRequiredVersion:@"6.0"]) {
+    [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+      if (granted){
+        rval = TRUE;
+        //---- codes here when user allow your app to access theirs' calendar.
+      } else {
+        //----- codes here when user NOT allow your app to access the calendar.
+        rval = FALSE;
+      }
+    }];
+  }
+  
+  return rval;
 }
 
 //-(void)removeAllEvents:(id)args {

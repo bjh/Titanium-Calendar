@@ -11,6 +11,8 @@
 }
 
 -(ComTiCalendarItemProxy*)findEvent:(id)args;
+-(BOOL)checkIsDeviceVersionHigherThanRequiredVersion:(NSString *)requiredVersion;
+-(BOOL)requestPermission:(id)args;
 //-(void)removeAllEvents:(id)args;
 
 @end
